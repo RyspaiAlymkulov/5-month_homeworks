@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import MovieSerializer, ReviewSerializer
+from .serializers import MovieSerializer, ReviewSerializer, DirectorSerializer
 from .models import Movie, Review, Director
 from rest_framework import status
 
@@ -12,14 +12,14 @@ from rest_framework import status
 @api_view(['GET'])
 def director_view(request):
     director = Director.objects.all()
-    serializer = ReviewSerializer(director, many=True)
+    serializer = DirectorSerializer(director, many=True)
     return Response(data=serializer.data)
 
 
 @api_view(['GET'])
 def director_detail_view(request, id):
     director = Director.objects.get(id=id)
-    serializer = ReviewSerializer(director)
+    serializer = DirectorSerializer(director)
     return Response(data=serializer.data)
 
 

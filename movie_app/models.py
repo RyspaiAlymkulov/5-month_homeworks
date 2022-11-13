@@ -17,3 +17,6 @@ class Movie(models.Model):
 class Review(models.Model):
     text = models.TextField()
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, blank=True, null=True)
+
+    def detail_link(self):
+        return f'http://127.0.01:8000/api/v1/movies/{self.id}/'
