@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .serializers import MovieSerializer, ReviewSerializer, \
     DirectorSerializer, MovieReviewSerializer, \
@@ -7,6 +7,7 @@ from .serializers import MovieSerializer, ReviewSerializer, \
     DirectorValidateSerializer
 from .models import Movie, Review, Director
 from rest_framework import status
+from users.permissions import IsStaffUser
 
 
 # Create your views here.
@@ -102,6 +103,7 @@ def review_detail_view(request, id):
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsStaffUser])
 def movies_view(request):
     if request.method == 'GET':
         movie = Movie.objects.all()
@@ -114,9 +116,9 @@ def movies_view(request):
                             status=status.HTTP_406_NOT_ACCEPTABLE)
         movie = Movie.objects.create(
             title=serializer.validated_data.get('title'),
-            description = serializer.validated_data.get('description'),
-            duration = serializer.validated_data.get('duration'),
-            director_id = serializer.validated_data.get('director_id')
+            description=serializer.validated_data.get('description'),
+            duration=serializer.validated_data.get('duration'),
+            director_id=serializer.validated_data.get('director_id')
         )
         return Response(data=MovieSerializer(movie).data,
                         status=status.HTTP_201_CREATED)
