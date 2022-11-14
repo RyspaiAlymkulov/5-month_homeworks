@@ -1,12 +1,11 @@
 from django.shortcuts import render
-
-# Create your views here.
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import MovieSerializer, ReviewSerializer, DirectorSerializer
+from .serializers import MovieSerializer, ReviewSerializer, DirectorSerializer, MovieReviewSerializer
 from .models import Movie, Review, Director
 from rest_framework import status
+
+# Create your views here.
 
 
 @api_view(['GET'])
@@ -28,6 +27,13 @@ def reviews_view(request):
     review = Review.objects.all()
     serializer = ReviewSerializer(review, many=True)
     return Response(data=serializer.data)
+
+
+@api_view(['GET'])
+def movie_review_view(request):
+    movie_review = Movie.objects.all()
+    data = MovieReviewSerializer(movie_review, many=True).data
+    return Response(data=data)
 
 
 @api_view(['GET'])
