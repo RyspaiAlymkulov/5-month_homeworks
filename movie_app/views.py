@@ -8,9 +8,45 @@ from .serializers import MovieSerializer, ReviewSerializer, \
 from .models import Movie, Review, Director
 from rest_framework import status
 from users.permissions import IsStaffUser
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.pagination import PageNumberPagination
 
 
-# Create your views here.
+class DirectorListAPIview(ListCreateAPIView):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+    pagination_class = PageNumberPagination
+
+
+class DirectorItemUpdateDeleteAPIview(RetrieveUpdateDestroyAPIView):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+    lookup_field = 'id'
+
+
+class MovieListAPIview(ListCreateAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    pagination_class = PageNumberPagination
+    permission_classes = IsStaffUser
+
+
+class MovieItemUpdateDeleteAPIview(RetrieveUpdateDestroyAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    lookup_field = 'id'
+
+
+class ReviewListAPIview(ListCreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    pagination_class = PageNumberPagination
+
+
+class ReviewItemUpdateDeleteAPIview(RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    lookup_field = 'id'
 
 
 @api_view(['GET', 'POST'])

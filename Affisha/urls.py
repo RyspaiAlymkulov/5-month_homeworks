@@ -16,6 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from movie_app import views
+from . import swagger
+
+LIST_CREATE = {
+    'get': 'list', 'post': 'create'
+}
+ITEM_UPDATE_DELETE = {
+    'get': 'retrieve', 'put': 'update', 'delete': 'destroy'
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +35,12 @@ urlpatterns = [
     path('api/v1/directors/', views.director_view),
     path('api/v1/directors/<int:id>/', views.director_detail_view),
     path('api/v1/movies/reviews/', views.movie_review_view),
-    path('api/v1/users/', include('users.urls'))
+    path('api/v1/users/', include('users.urls')),
+    path('api/v1/directors/', views.DirectorListAPIview.as_view()),
+    path('api/v1/directors/<int:id>/', views.DirectorItemUpdateDeleteAPIview.as_view()),
+    path('api/v1/movies/', views.MovieListAPIview.as_view()),
+    path('api/v1/movies/<int:id>/', views.MovieItemUpdateDeleteAPIview.as_view()),
+    path('api/v1/reviews/', views.ReviewListAPIview.as_view()),
+    path('api/v1/reviews/<int:id>/', views.ReviewItemUpdateDeleteAPIview.as_view())
 ]
+urlpatterns += swagger.urlpatterns
